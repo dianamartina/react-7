@@ -6,7 +6,9 @@ import Logo from '../assets/images/logo.png';
 import { ReactComponent as ShoppingCart } from '../assets/icons/shopping-cart.svg';
 import './Header.css';
 
-function Header() {
+function Header(props) {
+    const {user, signOut} = props;
+    // console.log(props);
     return(
         // Vrem ca headerul sa aiba un border sub el.
         <header className="border-bottom mb-3">
@@ -20,7 +22,15 @@ function Header() {
                     <img src={Logo} alt="Sirluggia Shop" className="logo"/>
                 </Link>
                 <div>
-                    <Link to="/login" className="h5">Login</Link>
+                    {
+                        user    
+                            ? (<div>
+                                    <p>Salut, {user.displayName}</p>
+                                    <button onClick={()=>{signOut()}}>Log out</button>
+                                </div>)
+                            : <Link to="/login" className="h5">Login</Link>
+                    }
+                    
                     {/* ShoppingCart este un SVG! */}
                     <ShoppingCart className="ml-2"/>
                 </div>

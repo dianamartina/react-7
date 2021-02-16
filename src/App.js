@@ -11,6 +11,18 @@ import Category from './pages/Category';
 // Vom folosi utility-classes in intreaga aplicatie, deci importam
 // fisierul in App, pentru a avea vizibilitate globala.
 import './utils/utility-classes.css';
+// Firebase imports
+import withFirebaseAuth from 'react-with-firebase-auth'
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import firebaseConfig from './config/firebase';
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+const firebaseAppAuth = firebaseApp.auth();
+const providers = {
+  googleProvider: new firebase.auth.GoogleAuthProvider(),
+};
 
 class App extends React.Component {
   constructor() {
@@ -19,12 +31,40 @@ class App extends React.Component {
   }
 
   render() {
+    const {
+      user,
+      signOut,
+      signInWithGoogle,
+    } = this.props;
+
+    // console.log(this.props);
+
     return(
+      // doar pt verificare de functionare
       <div className="app">
+        {/* {
+        user 
+          ? <p>Hello, {user.displayName}</p>
+          : <p>Please sign in.</p>
+        }
+        {
+          user
+            ? <button onClick={signOut}>Sign out</button>
+            : <button onClick={signInWithGoogle}>Sign in with Google</button>
+        }  */}
+
         <Switch>
-          <Route path='/login' component={Login}/>
+          <Route /* asa se trimite props avand Route */
+            path='/login'
+            render={(props) => (/* aceste props sunt cele din Route, pe care le vrem */
+              <Login {...props} signInWithGoogle={signInWithGoogle} />
+            )}
+          />
           <Route path='/register' component={Register}/>
-          <Route exact path='/' component={Home}/>
+          {/* <Route exact path='/' component={Home}/> */}
+          <Route exact path='/' render={(props) => (/* aceste props sunt cele din Route, pe care le vrem */
+              <Home {...props} user={user}  signOut={signOut}/>
+            )}/>
           <Route path='/about' component={About}/>
           {/* ATENTIE! Avem 6 categorii, pentru care vom afisa pagina Category, cu diverse props-uri.
           NU vom face 6 rute duferite, ci vom transmite numele rutei, ca parametru dinamic.
@@ -38,4 +78,9 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const AppOnSteroids = withFirebaseAuth({
+  providers,
+  firebaseAppAuth,
+})(App);
+
+export default AppOnSteroids;

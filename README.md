@@ -1,11 +1,8 @@
-## JavaScript Advanced - Curs 6
+React 7
 
-Pentru a rula aceasta etapa (in linie de comanda):
+# Description
 
-#### 1. `git clone https://github.com/razvancir96/react-curs06.git`
+Implementing Google Login using Firebase. 
 
-#### 2. `cd react-curs06`
+Adding products list from a category product.
 
-#### 3. `npm install` (posibil sa dureze)
-
-#### 4. `npm start`
